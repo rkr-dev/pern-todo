@@ -1,31 +1,18 @@
-import React, { Fragment, useEffect, useState } from 'react'
-export const ListTodos = () => {
-  const [todos, setTodos] = useState([])
-  const getTodos = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/todos')
-      const todosFromDB = await response.json()
-      setTodos(todosFromDB)
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
+import React, { Fragment } from 'react'
+import { EditTodo } from '../EditTodo/EditTodo'
 
+export const ListTodos = ({ todos, getTodos }) => {
   const deleteTodo = async (id) => {
     try {
       const delTodo = await fetch(`http://localhost:5000/todos/${id}`, {
         method: 'DELETE',
       })
-      setTodos(todos.filter((todo) => todo.todo_id !== id))
+      getTodos()
     } catch (err) {
       console.log(err.message)
     }
   }
 
-  useEffect(() => {
-    getTodos()
-    return () => {}
-  }, [])
   return (
     <Fragment>
       <table className='table'>
@@ -40,7 +27,9 @@ export const ListTodos = () => {
           {todos.map((todo) => (
             <tr key={todo.todo_id}>
               <td>{todo.description}</td>
-              <td>Edit</td>
+              <td>
+                <EditTodo todo={todo} getTodos={getTodos} />
+              </td>
               <td>
                 <button
                   className='btn btn-danger'

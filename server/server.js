@@ -56,8 +56,7 @@ app.put('/todos/:id', async (req, res) => {
       'UPDATE todo SET description = $1 WHERE todo_id = $2',
       [description, id]
     )
-    res.json({ message: 'todo was updated' })
-    res.json(todo.rows[0])
+    res.json(updateTodo.rows[0])
   } catch (err) {
     console.log(err.message)
   }

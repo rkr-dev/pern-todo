@@ -1,17 +1,18 @@
 import React, { Fragment, useState } from 'react'
 
-export const InputTodo = () => {
+export const InputTodo = ({ getTodos }) => {
   const [description, setDescription] = useState('')
   const onFormSubmit = async (e) => {
     e.preventDefault()
     try {
       const body = { description }
-      const response = await fetch('http://localhost:5000/todos', {
+      await fetch('http://localhost:5000/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      window.location = '/'
+      getTodos()
+      setDescription('')
     } catch (err) {
       console.error(err.message)
     }
